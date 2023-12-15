@@ -2,6 +2,7 @@ import ship from '../factories/ship';
 
 test('Create a ship', () => {
   const myShip = ship(3);
+  expect(myShip).toBeDefined();
   expect(myShip).toHaveProperty('hits');
 });
 

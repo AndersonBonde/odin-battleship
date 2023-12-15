@@ -1,4 +1,4 @@
-function ship(size) {
+function ship(size = 1) {
   let hits = 0;
 
   function hit() {
