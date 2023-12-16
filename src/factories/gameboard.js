@@ -28,14 +28,6 @@ function gameboard(width = 10, height = 10) {
   board.player = initializeBoard();
   board.enemy = initializeBoard();
 
-  const shot = {
-    player: [],
-    enemy: [],
-  };
-
-  shot.player = initializeBoard();
-  shot.enemy = initializeBoard();
-
   const ships = {
     player: [],
     enemy: [],
@@ -55,24 +47,29 @@ function gameboard(width = 10, height = 10) {
   }
 
   function receiveAttack(x, y, target) {
-    // Check if square was already shot, return null if yes;
-    if (shot[target][x][y] !== null) return null;
-
-    shot[target][x][y] = 1;
     const hitSquare = board[target][x][y];
-    if (hitSquare !== null) {
-      hitSquare.hit();
 
-      if (allShipsSunk(target)) {
-        // TODO: message the game to end;
-
-        return 'Game over';
-      }
-
-      return true;
+    // Check if hitSquare is 1, meaning that square was already shot, return null if yes;
+    if (hitSquare === 1) {
+      return null;
+    }
+    // Null means that square is empty and wasn't shot yet, change to 1 and return false;
+    if (hitSquare === null) {
+      board[target][x][y] = 1;
+      return false;
     }
 
-    return false;
+    // Not the previous two choices means a ship was hit;
+    hitSquare.hit();
+    board[target][x][y] = 1;
+
+    if (allShipsSunk(target)) {
+      //  TODO: message the game to end;
+
+      return 'Game over';
+    }
+
+    return true;
   }
 
   return {
