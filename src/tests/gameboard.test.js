@@ -1,4 +1,3 @@
-import { experiments } from 'webpack';
 import gameboard from '../factories/gameboard';
 
 test('Create a board', () => {

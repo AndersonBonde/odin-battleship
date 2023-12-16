@@ -33,6 +33,30 @@ function gameboard(width = 10, height = 10) {
     enemy: [],
   };
 
+  // Helper function so the computer can pick a target;
+  function fillPossibleTargets() {
+    const arr = [];
+
+    for (let i = 0; i < boardSize.width; i++) {
+      for (let j = 0; j < boardSize.height; j++) {
+        arr.push({ x: i, y: j });
+      }
+    }
+
+    return arr;
+  }
+
+  const possibleTargets = fillPossibleTargets();
+
+  function pickRandomSquare() {
+    const randomIndex = Math.floor(Math.random() * possibleTargets.length);
+    const value = possibleTargets[randomIndex];
+
+    possibleTargets.splice(randomIndex, 1);
+
+    return value;
+  }
+
   function placeShip(x, y, target) {
     // TODO: Only size 1 ships for now, increase later;
     const newShip = ship(1);
@@ -58,7 +82,6 @@ function gameboard(width = 10, height = 10) {
       board[target][x][y] = 1;
       return false;
     }
-
     // Not the previous two choices means a ship was hit;
     hitSquare.hit();
     board[target][x][y] = 1;
@@ -76,6 +99,7 @@ function gameboard(width = 10, height = 10) {
     get board() { return board; },
     placeShip,
     receiveAttack,
+    pickRandomSquare,
   };
 }
 
