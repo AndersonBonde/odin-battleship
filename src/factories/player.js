@@ -1,4 +1,4 @@
-import gameboard from './gameboard';
+import events from '../events';
 
 function player() {
   let turn = 1;
@@ -6,11 +6,7 @@ function player() {
   function attack(x, y) {
     turn += 1;
 
-    gameboard.receiveAttack(x, y, 'enemy');
-
-    // Enemy picks a random possible square;
-    const randomSquare = gameboard.pickRandomSquare();
-    gameboard.receiveAttack(randomSquare.x, randomSquare.y, 'player');
+    events.emit('playerAttack', x, y, 'enemy');
   }
 
   return {

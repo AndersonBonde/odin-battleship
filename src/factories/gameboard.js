@@ -1,4 +1,5 @@
 import ship from './ship';
+import events from '../events';
 
 function gameboard(width = 10, height = 10) {
   const boardSize = {
@@ -92,14 +93,24 @@ function gameboard(width = 10, height = 10) {
       return 'Game over';
     }
 
+    // The computer will attack back automatically;
+    if (target === 'enemy') attackPlayer();
+
     return true;
   }
+
+  function attackPlayer() {
+    const randomSquare = pickRandomSquare();
+
+    receiveAttack(randomSquare.x, randomSquare.y, 'player');
+  }
+
+  events.on('playerAttack', receiveAttack);
 
   return {
     get board() { return board; },
     placeShip,
     receiveAttack,
-    pickRandomSquare,
   };
 }
 
