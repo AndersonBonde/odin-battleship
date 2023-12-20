@@ -1,7 +1,6 @@
 import player from '../factories/player';
 import events from '../events';
 
-// Mock the events module;
 jest.mock('../events');
 
 test('Initialize turn correctly', () => {

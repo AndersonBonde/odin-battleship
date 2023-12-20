@@ -1,4 +1,7 @@
 import gameboard from '../factories/gameboard';
+import events from '../events';
+
+jest.mock('../events');
 
 test('Create a board', () => {
   const myBoard = gameboard();
@@ -61,4 +64,13 @@ test('Shooting the same place twice should return null', () => {
   expect(myBoard.receiveAttack(3, 2, 'player')).toBeNull();
   expect(myBoard.receiveAttack(3, 2, 'enemy')).not.toBeNull();
   expect(myBoard.receiveAttack(3, 2, 'enemy')).toBeNull();
+});
+
+test('playerAttack event triggers receiveAttack', () => {
+  const myBoard = gameboard();
+  const spyOnEvents = jest.spyOn(events, 'on');
+
+  events.emit('playerAttack', 1, 3, 'enemy');
+
+  expect(spyOnEvents).toHaveBeenCalledWith('playerAttack', myBoard.receiveAttack);
 });
