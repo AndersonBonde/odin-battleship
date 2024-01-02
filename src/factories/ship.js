@@ -1,4 +1,5 @@
-function ship(size = 1) {
+function ship(initialValue = 1) {
+  const size = initialValue;
   let hits = 0;
 
   function hit() {

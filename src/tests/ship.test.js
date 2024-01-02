@@ -6,7 +6,7 @@ test('New ship should have been hit 0 times', () => {
 });
 
 test('Initial ship shouldn`t be sunk', () => {
-  const myShip = ship(3);
+  const myShip = ship();
   expect(myShip.isSunk()).toBe(false);
 });
 
