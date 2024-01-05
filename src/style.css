@@ -5,5 +5,46 @@
 }
 
 body {
-  background-color: tomato;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+header {
+  background-color: lightgray;
+  padding: 12px;
+}
+
+.container {
+  height: 100vh;
+  padding-top: 120px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.playerBoard {
+
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tr:nth-of-type(11) > td {
+  border: none;
+}
+
+td:nth-child(1) {
+  border: none;
+}
+
+td, th {
+  border: 1px solid rgb(190, 190, 190);
+  padding: 10px, 20px;
+}
+
+td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
 }
