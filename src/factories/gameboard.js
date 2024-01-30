@@ -51,12 +51,12 @@ function gameboard(initialSize = 10) {
 
   function receiveAttack(column, row) {
     if (checkShot(column, row)) return false;
-    const ship = board[row][column] !== null ? board[row][column] : false;
+    const target = board[row][column];
 
     shots.push([column, row]);
 
-    if (ship) {
-      ship.hit();
+    if (target) {
+      target.hit();
       if (allShipsAreSunk()) return 'Game Over';
     }
 
