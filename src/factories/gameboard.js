@@ -64,11 +64,18 @@ function gameboard(initialSize = 10) {
     return true;
   }
 
+  function receiveRandomAttack() {
+    const randomIdx = Math.floor(Math.random() * possibleShots.length);
+
+    receiveAttack(randomIdx.column, randomIdx.row);
+  }
+
   return {
     get possibleShots() { return possibleShots; },
     getSquare,
     placeShip,
     receiveAttack,
+    receiveRandomAttack,
   };
 }
 
