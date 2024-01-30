@@ -2,7 +2,7 @@ const ship = require('./ship');
 
 function gameboard(initialSize = 10) {
   const size = initialSize;
-  const shots = [];
+  const possibleShots = [];
   const ships = [];
 
   function createBoard() {
@@ -12,6 +12,7 @@ function gameboard(initialSize = 10) {
       arr[row] = [];
       for (let column = 0; column < size; column++) {
         arr[row][column] = null;
+        possibleShots.push({ column, row });
       }
     }
 
@@ -35,11 +36,13 @@ function gameboard(initialSize = 10) {
     ships.push(newShip);
   }
 
-  // Check if the given coordinate has already been shot;
-  function checkShot(column, row) {
-    for (let i = 0; i < shots.length; i++) {
-      const [curColumn, curRow] = shots[i];
-      if (curColumn === column && curRow === row) return true;
+  function squareCanBeShot(column, row) {
+    for (let i = 0; i < possibleShots.length; i++) {
+      const el = possibleShots[i];
+      if (el.column === column && el.row === row) {
+        possibleShots.splice(i, 1);
+        return true;
+      }
     }
 
     return false;
@@ -50,10 +53,8 @@ function gameboard(initialSize = 10) {
   }
 
   function receiveAttack(column, row) {
-    if (checkShot(column, row)) return false;
+    if (!squareCanBeShot(column, row)) return false;
     const target = board[row][column];
-
-    shots.push([column, row]);
 
     if (target) {
       target.hit();
@@ -64,6 +65,7 @@ function gameboard(initialSize = 10) {
   }
 
   return {
+    get possibleShots() { return possibleShots; },
     getSquare,
     placeShip,
     receiveAttack,
