@@ -45,3 +45,10 @@ test('Ship with size 1 should be sunk after receiving 1 attack', () => {
   myBoard.receiveAttack(1, 2);
   expect(ship.isSunk()).toBe(true);
 });
+
+test('Gameover message after sinking all ships', () => {
+  myBoard.placeShip(1, 3);
+  myBoard.placeShip(1, 5);
+  expect(myBoard.receiveAttack(1, 3)).toBe(true);
+  expect(myBoard.receiveAttack(1, 5)).toBe('Game Over');
+});

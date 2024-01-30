@@ -3,6 +3,7 @@ const ship = require('./ship');
 function gameboard(initialSize = 10) {
   const size = initialSize;
   const shots = [];
+  const ships = [];
 
   function createBoard() {
     const arr = [];
@@ -31,27 +32,33 @@ function gameboard(initialSize = 10) {
     const newShip = ship();
 
     board[row][column] = newShip;
+    ships.push(newShip);
   }
 
   // Check if the given coordinate has already been shot;
   function checkShot(column, row) {
     for (let i = 0; i < shots.length; i++) {
-      const cur = shots[i];
-
-      if (cur[0] === column && cur[1] === row) return true;
+      const [curColumn, curRow] = shots[i];
+      if (curColumn === column && curRow === row) return true;
     }
 
     return false;
+  }
+
+  function allShipsAreSunk() {
+    return ships.every((curShip) => curShip.isSunk());
   }
 
   function receiveAttack(column, row) {
     if (checkShot(column, row)) return false;
     const ship = board[row][column] !== null ? board[row][column] : false;
 
+    shots.push([column, row]);
+
     if (ship) {
       ship.hit();
+      if (allShipsAreSunk()) return 'Game Over';
     }
-    shots.push([column, row]);
 
     return true;
   }
