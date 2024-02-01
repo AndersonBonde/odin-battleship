@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  padding: 24px;
+  background-color: lightgrey;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  gap: 36px;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+table {
+  border-collapse: collapse;
+  letter-spacing: 1px;
+}
+
+td, th {
+  border: 1px solid rgb(100, 100, 100);
+  width: 48px;
+  height: 48px;
+}
+
+td {
+  text-align: center;
+}
+
+.playerBoard td:hover,
+.computerBoard td:hover {
+  cursor: pointer;
+}
+
+.playerBoard td:hover {
+  background-color: lightblue;
+}
+
+.computerBoard td:hover {
+  background-color: lightcoral;
+}
+
+.playerBoard tr:last-child td,
+.computerBoard tr:last-child td {
+  background-color: unset;
+  border: unset;
+  cursor: unset;
+}
+
+.playerBoard td:first-child,
+.computerBoard td:first-child {
+  background-color: unset;
+  border: unset;
+  cursor: unset;
+}
