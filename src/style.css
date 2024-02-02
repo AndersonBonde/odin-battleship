@@ -46,7 +46,7 @@ td {
 }
 
 .computerBoard td:hover {
-  background-color: lightcoral;
+  background-color: lightCoral;
 }
 
 .playerBoard tr:last-child td,

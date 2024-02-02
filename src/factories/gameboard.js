@@ -1,8 +1,8 @@
 const ship = require('./ship');
 
-function gameboard(DOMValue, initialSize = 10) {
-  const size = initialSize;
-  const table = DOMValue;
+function gameboard(gameboardDOM) {
+  const size = 10;
+  const tableDOM = gameboardDOM;
   const possibleShots = [];
   const ships = [];
 
@@ -53,6 +53,13 @@ function gameboard(DOMValue, initialSize = 10) {
     return ships.every((curShip) => curShip.isSunk());
   }
 
+  function paintShotSquare(column, row, color) {
+    const tr = document.querySelector(`${tableDOM} tr[data-row='${row}']`);
+    const td = tr.querySelector(`td[data-column='${column}']`);
+
+    td.style.backgroundColor = color;
+  }
+
   function receiveAttack(column, row) {
     if (!squareCanBeShot(column, row)) return false;
     const target = board[row][column];
@@ -72,7 +79,8 @@ function gameboard(DOMValue, initialSize = 10) {
     const randomIdx = Math.floor(Math.random() * possibleShots.length);
     const el = possibleShots[randomIdx];
 
-    receiveAttack(el.column, el.row);
+    const attack = receiveAttack(el.column, el.row);
+    return attack;
   }
 
   function pickRandomSquare() {
@@ -90,13 +98,6 @@ function gameboard(DOMValue, initialSize = 10) {
       const randomPos = pickRandomSquare();
       placeShip(randomPos.column, randomPos.row);
     }
-  }
-
-  function paintShotSquare(column, row, color) {
-    const tr = document.querySelector(`${table} tr[data-row='${row}']`);
-    const td = tr.querySelector(`td[data-column='${column}']`);
-
-    td.style.backgroundColor = color;
   }
 
   return {
