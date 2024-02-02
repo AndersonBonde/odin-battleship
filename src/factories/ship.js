@@ -1,5 +1,6 @@
-function ship(initialLength = 1) {
+function ship(initialPos, initialLength = 1) {
   const length = initialLength;
+  const pos = initialPos;
   let hits = 0;
 
   function hit() {
@@ -13,6 +14,7 @@ function ship(initialLength = 1) {
   }
 
   return {
+    get pos() { return pos; },
     hit,
     isSunk,
   };

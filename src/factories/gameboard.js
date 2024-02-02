@@ -1,7 +1,8 @@
 const ship = require('./ship');
 
-function gameboard(initialSize = 10) {
+function gameboard(DOMValue, initialSize = 10) {
   const size = initialSize;
+  const table = DOMValue;
   const possibleShots = [];
   const ships = [];
 
@@ -30,7 +31,7 @@ function gameboard(initialSize = 10) {
   }
 
   function placeShip(column, row) {
-    const newShip = ship();
+    const newShip = ship({ column, row });
 
     board[row][column] = newShip;
     ships.push(newShip);
@@ -39,7 +40,7 @@ function gameboard(initialSize = 10) {
   function squareCanBeShot(column, row) {
     for (let i = 0; i < possibleShots.length; i++) {
       const el = possibleShots[i];
-      if (el.column === column && el.row === row) {
+      if (el.column == column && el.row == row) {
         possibleShots.splice(i, 1);
         return true;
       }
@@ -58,7 +59,10 @@ function gameboard(initialSize = 10) {
 
     if (target) {
       target.hit();
+      paintShotSquare(column, row, 'black');
       if (allShipsAreSunk()) return 'Game Over';
+    } else {
+      paintShotSquare(column, row, 'tomato');
     }
 
     return true;
@@ -66,16 +70,43 @@ function gameboard(initialSize = 10) {
 
   function receiveRandomAttack() {
     const randomIdx = Math.floor(Math.random() * possibleShots.length);
+    const el = possibleShots[randomIdx];
 
-    receiveAttack(randomIdx.column, randomIdx.row);
+    receiveAttack(el.column, el.row);
+  }
+
+  function pickRandomSquare() {
+    const randomIdx = Math.floor(Math.random() * possibleShots.length);
+    let pos = possibleShots[randomIdx];
+    if (getSquare(pos.column, pos.row) !== null) {
+      pos = pickRandomSquare();
+    }
+
+    return pos;
+  }
+
+  function placeRandomShips(amount) {
+    for (let i = 0; i < amount; i++) {
+      const randomPos = pickRandomSquare();
+      placeShip(randomPos.column, randomPos.row);
+    }
+  }
+
+  function paintShotSquare(column, row, color) {
+    const tr = document.querySelector(`${table} tr[data-row='${row}']`);
+    const td = tr.querySelector(`td[data-column='${column}']`);
+
+    td.style.backgroundColor = color;
   }
 
   return {
     get possibleShots() { return possibleShots; },
+    get ships() { return ships; },
     getSquare,
     placeShip,
     receiveAttack,
     receiveRandomAttack,
+    placeRandomShips,
   };
 }
 
