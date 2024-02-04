@@ -6,7 +6,7 @@ function gameLoop() {
   let onGoing = true;
   let winner;
 
-  playerBoard.placeRandomShips(10);
+  // playerBoard.placeRandomShips(10);
   computerBoard.placeRandomShips(10);
 
   (function displayShips() {
