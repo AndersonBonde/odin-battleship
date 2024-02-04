@@ -14,16 +14,16 @@
     <table class="playerBoard">
       <tr data-row="9">
         <td>10</td>
-        <td data-column="0"></td>
-        <td data-column="1"></td>
-        <td data-column="2"></td>
-        <td data-column="3"></td>
-        <td data-column="4"></td>
-        <td data-column="5"></td>
-        <td data-column="6"></td>
-        <td data-column="7"></td>
-        <td data-column="8"></td>
-        <td data-column="9"></td>
+        <td data-column="0" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="1" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="2" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="3" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="4" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="5" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="6" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="7" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="8" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td data-column="9" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
       </tr>
       <tr data-row="8">
         <td>9</td>
@@ -301,6 +301,36 @@
         <td>J</td>
       </tr>
     </table>
+  </div>
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData('ship', ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData('ship');
+      ev.target.appendChild(document.getElementById(data));
+    }
+  </script>
+  <div class="shipContainer">
+    <header>
+      <h2>Place your ships!</h2>
+    </header>
+    <div class="ships">
+      <div id="ship1" class="ship" draggable="true" ondragstart="drag(event)"></div>
+      <div id="ship2" class="ship" draggable="true" ondragstart="drag(event)"></div>
+      <div id="ship3" class="ship" draggable="true" ondragstart="drag(event)"></div>
+      <div id="ship4" class="ship" draggable="true" ondragstart="drag(event)"></div>
+      <div class="ship x2"></div>
+      <div class="ship x2"></div>
+      <div class="ship x3"></div>
+      <div class="ship x3"></div>
+    </div>
   </div>
 </body>
 </html>
