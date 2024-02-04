@@ -26,7 +26,42 @@ function gameLoop() {
   }());
 
   const playerTds = document.querySelectorAll('.playerBoard td[data-column]');
+  const shipDraggables = document.querySelectorAll('.ship');
   const computerTds = document.querySelectorAll('.computerBoard td[data-column]');
+
+  (function configureDraggables() {
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData('ship', ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData('ship');
+      ev.target.appendChild(document.getElementById(data));
+    }
+
+    playerTds.forEach((square) => {
+      square.addEventListener('drop', (event) => {
+        event.preventDefault();
+        const data = event.dataTransfer.getData('ship');
+        event.target.appendChild(document.getElementById(data));
+      });
+      square.addEventListener('dragover', (event) => {
+        event.preventDefault();
+      });
+    });
+
+    shipDraggables.forEach((draggable) => {
+      draggable.setAttribute('draggable', true);
+      draggable.addEventListener('dragstart', (event) => {
+        event.dataTransfer.setData('ship', event.target.id);
+      });
+    });
+  }());
 
   function displayWinner() {
     console.log(`${winner} won the match!`);
