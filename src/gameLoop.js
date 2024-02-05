@@ -38,6 +38,7 @@ function gameLoop() {
   function updateDraggedShip(targetTd) {
     const parent = targetTd.parentNode;
     const [column, row] = [targetTd.dataset.column, parent.dataset.row];
+    shipBeingDragged.style.backgroundColor = 'rgba(180, 180, 180, 0.4)';
     shipBeingDragged.dataset.column = column;
     shipBeingDragged.dataset.row = row;
   }
