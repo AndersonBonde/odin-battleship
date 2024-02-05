@@ -3,7 +3,7 @@ const gameboard = require('./factories/gameboard');
 function gameLoop() {
   const playerBoard = gameboard('.playerBoard');
   const computerBoard = gameboard('.computerBoard');
-  let onGoing = true;
+  let onGoing = false;
   let winner;
   let shipBeingDragged;
 
@@ -48,6 +48,12 @@ function gameLoop() {
     playerBoard.placeShip(column, row);
   }
 
+  function removeDraggableFromShips() {
+    shipDraggables.forEach((ship) => {
+      ship.setAttribute('draggable', false);
+    });
+  }
+
   (function configureDraggables() {
     function allowDrop(ev) {
       ev.preventDefault();
@@ -74,6 +80,11 @@ function gameLoop() {
       updateDraggedShip(ev.target);
       addShipToBoard();
       shipBeingDragged = null;
+
+      if (playerBoard.ships.length === 8) { // TODO: Remove magic number!
+        onGoing = true;
+        removeDraggableFromShips();
+      }
     }
 
     playerTds.forEach((square) => {
