@@ -37,6 +37,13 @@ function gameboard(gameboardDOM) {
     ships.push(newShip);
   }
 
+  function removeShip(column, row) {
+    ships.forEach((ship, idx) => {
+      if (ship.pos.column == column && ship.pos.row == row) ships.splice(idx, 1);
+    });
+    board[row][column] = null;
+  }
+
   function squareCanBeShot(column, row) {
     for (let i = 0; i < possibleShots.length; i++) {
       const el = possibleShots[i];
@@ -105,6 +112,7 @@ function gameboard(gameboardDOM) {
     get ships() { return ships; },
     getSquare,
     placeShip,
+    removeShip,
     receiveAttack,
     receiveRandomAttack,
     placeRandomShips,

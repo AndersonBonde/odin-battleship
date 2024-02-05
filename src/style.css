@@ -33,17 +33,13 @@ table {
 td, th {
   border: 1px solid rgb(100, 100, 100);
   width: 36px;
+  max-width: 36px;
   height: 36px;
+  max-height: 36px;
 }
 
 td {
   text-align: center;
-}
-
-td > .ship {
-  width: var(--ship-size);
-  height: var(--ship-size);
-  background-color: lightgray;
 }
 
 .playerBoard td:hover,

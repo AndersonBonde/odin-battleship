@@ -5,8 +5,8 @@ function gameLoop() {
   const computerBoard = gameboard('.computerBoard');
   let onGoing = true;
   let winner;
+  let shipBeingDragged;
 
-  // playerBoard.placeRandomShips(10);
   computerBoard.placeRandomShips(10);
 
   (function displayShips() {
@@ -29,37 +29,60 @@ function gameLoop() {
   const shipDraggables = document.querySelectorAll('.ship');
   const computerTds = document.querySelectorAll('.computerBoard td[data-column]');
 
+  function canPlaceShipOnSquare(column, row) {
+    const square = playerBoard.getSquare(column, row);
+
+    return (square === null);
+  }
+
+  function updateDraggedShip(targetTd) {
+    const parent = targetTd.parentNode;
+    const [column, row] = [targetTd.dataset.column, parent.dataset.row];
+    shipBeingDragged.dataset.column = column;
+    shipBeingDragged.dataset.row = row;
+  }
+
+  function addShipToBoard() {
+    const { column, row } = shipBeingDragged.dataset;
+    playerBoard.placeShip(column, row);
+  }
+
   (function configureDraggables() {
     function allowDrop(ev) {
       ev.preventDefault();
     }
 
     function drag(ev) {
+      shipBeingDragged = ev.target;
+      const { column, row } = shipBeingDragged.dataset;
+
+      if (column != -1) playerBoard.removeShip(column, row);
+
       ev.dataTransfer.setData('ship', ev.target.id);
     }
 
     function drop(ev) {
+      const tdParent = ev.target.parentNode;
+      const [column, row] = [ev.target.dataset.column, tdParent.dataset.row];
+      if (!canPlaceShipOnSquare(column, row)) return;
+
       ev.preventDefault();
       const data = ev.dataTransfer.getData('ship');
       ev.target.appendChild(document.getElementById(data));
+
+      updateDraggedShip(ev.target);
+      addShipToBoard();
+      shipBeingDragged = null;
     }
 
     playerTds.forEach((square) => {
-      square.addEventListener('drop', (event) => {
-        event.preventDefault();
-        const data = event.dataTransfer.getData('ship');
-        event.target.appendChild(document.getElementById(data));
-      });
-      square.addEventListener('dragover', (event) => {
-        event.preventDefault();
-      });
+      square.addEventListener('drop', drop);
+      square.addEventListener('dragover', allowDrop);
     });
 
     shipDraggables.forEach((draggable) => {
       draggable.setAttribute('draggable', true);
-      draggable.addEventListener('dragstart', (event) => {
-        event.dataTransfer.setData('ship', event.target.id);
-      });
+      draggable.addEventListener('dragstart', drag);
     });
   }());
 
