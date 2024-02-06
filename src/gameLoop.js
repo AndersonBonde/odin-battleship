@@ -46,8 +46,8 @@ function gameLoop() {
   }
 
   function addShipToBoard() {
-    const { column, row } = shipBeingDragged.dataset;
-    playerBoard.placeShip(column, row);
+    const { column, row, size } = shipBeingDragged.dataset;
+    playerBoard.placeShip(column, row, size);
   }
 
   function removeDraggableFromShips() {

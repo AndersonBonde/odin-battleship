@@ -30,10 +30,21 @@ function gameboard(gameboardDOM) {
     throw new Error('Coordinate out of bounds');
   }
 
-  function placeShip(column, row) {
-    const newShip = ship({ column, row });
+  function placeShip(column, row, shipSize = 1) {
+    const newShip = ship({ column, row }, shipSize);
 
-    board[row][column] = newShip;
+    for (let i = 0; i < shipSize; i++) {
+      if (getSquare(+column + i, row) != null) {
+        // Ship can't be placed message
+        console.log('Can"t place ship');
+        return;
+      }
+    }
+
+    for (let i = 0; i < shipSize; i++) {
+      board[row][+column + i] = newShip;
+    }
+
     ships.push(newShip);
   }
 
@@ -108,6 +119,7 @@ function gameboard(gameboardDOM) {
   }
 
   return {
+    get board() { return board; },
     get possibleShots() { return possibleShots; },
     get ships() { return ships; },
     getSquare,
