@@ -3,7 +3,9 @@ const gameboard = require('./factories/gameboard');
 function gameLoop() {
   const playerBoard = gameboard('.playerBoard');
   const computerBoard = gameboard('.computerBoard');
+  const computerTurnDelay = 400;
   let onGoing = false;
+  let playerTurn = true;
   let winner;
   let shipBeingDragged;
 
@@ -104,7 +106,7 @@ function gameLoop() {
 
   computerTds.forEach((el) => {
     el.addEventListener('click', () => {
-      if (!onGoing) return;
+      if (!onGoing || !playerTurn) return;
 
       const parent = el.parentNode;
       const { column } = el.dataset;
@@ -121,12 +123,17 @@ function gameLoop() {
           displayWinner();
         }
 
-        const playerAttack = playerBoard.receiveRandomAttack();
-        if (playerAttack == 'Game Over') {
-          onGoing = false;
-          winner = 'Computer';
-          displayWinner();
-        }
+        playerTurn = false;
+        setTimeout(() => {
+          playerTurn = true;
+
+          const playerAttack = playerBoard.receiveRandomAttack();
+          if (playerAttack == 'Game Over') {
+            onGoing = false;
+            winner = 'Computer';
+            displayWinner();
+          }
+        }, computerTurnDelay);
       }
     });
   });
