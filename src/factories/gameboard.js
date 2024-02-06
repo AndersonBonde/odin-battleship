@@ -87,7 +87,7 @@ function gameboard(gameboardDOM) {
       paintShotSquare(column, row, 'black');
       if (allShipsAreSunk()) return 'Game Over';
     } else {
-      paintShotSquare(column, row, 'tomato');
+      paintShotSquare(column, row, 'lightCoral');
     }
 
     return true;

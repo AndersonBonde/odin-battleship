@@ -1,9 +1,11 @@
 const gameboard = require('./factories/gameboard');
 
-function gameLoop() {
+(function gameLoop() {
   const playerBoard = gameboard('.playerBoard');
   const computerBoard = gameboard('.computerBoard');
+  const shipContainer = document.querySelector('.shipContainer');
   const computerTurnDelay = 400;
+  const playerShipsAmount = 8;
   let onGoing = false;
   let playerTurn = true;
   let winner;
@@ -29,7 +31,7 @@ function gameLoop() {
   function updateDraggedShip(targetTd) {
     const parent = targetTd.parentNode;
     const [column, row] = [targetTd.dataset.column, parent.dataset.row];
-    shipBeingDragged.style.backgroundColor = 'rgba(180, 180, 180, 0.4)';
+    shipBeingDragged.style.backgroundColor = 'rgba(180, 180, 180, 0.6)';
     shipBeingDragged.dataset.column = column;
     shipBeingDragged.dataset.row = row;
   }
@@ -73,9 +75,10 @@ function gameLoop() {
       addShipToBoard();
       shipBeingDragged = null;
 
-      if (playerBoard.ships.length === 8) { // TODO: Remove magic number!
+      if (playerBoard.ships.length === playerShipsAmount) {
         onGoing = true;
         removeDraggableFromShips();
+        shipContainer.style.display = 'none';
       }
     }
 
@@ -127,5 +130,4 @@ function gameLoop() {
       }
     });
   });
-}
-gameLoop();
+}());
