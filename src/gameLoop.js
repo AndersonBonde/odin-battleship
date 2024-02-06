@@ -11,7 +11,7 @@ const gameboard = require('./factories/gameboard');
   let winner;
   let shipBeingDragged;
 
-  computerBoard.placeRandomShips(4, 2, 2);
+  computerBoard.placeRandomShips(2, 5, 1);
 
   const playerTds = document.querySelectorAll('.playerBoard td[data-column]');
   const shipDraggables = document.querySelectorAll('.ship');
