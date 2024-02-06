@@ -75,6 +75,14 @@ td {
   gap: 36px;
 }
 
+.shipContainer > header {
+  text-align: center;
+}
+
+.shipContainer > header p {
+  color: rgb(90, 90, 90);
+}
+
 .ships {
   display: flex;
   gap: 12px;

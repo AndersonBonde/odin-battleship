@@ -9,32 +9,21 @@ function gameLoop() {
   let winner;
   let shipBeingDragged;
 
-  computerBoard.placeRandomShips(10);
-
-  (function displayShips() {
-    playerBoard.ships.forEach((ship) => {
-      const tr = document.querySelector(`.playerBoard tr[data-row='${ship.pos.row}']`);
-      const td = tr.querySelector(`td[data-column='${ship.pos.column}']`);
-
-      td.style.backgroundColor = 'lightgrey';
-    });
-
-    computerBoard.ships.forEach((ship) => {
-      const tr = document.querySelector(`.computerBoard tr[data-row='${ship.pos.row}']`);
-      const td = tr.querySelector(`td[data-column='${ship.pos.column}']`);
-
-      td.style.backgroundColor = 'lightgrey';
-    });
-  }());
+  computerBoard.placeRandomShips(4, 2, 2);
 
   const playerTds = document.querySelectorAll('.playerBoard td[data-column]');
   const shipDraggables = document.querySelectorAll('.ship');
   const computerTds = document.querySelectorAll('.computerBoard td[data-column]');
 
-  function canPlaceShipOnSquare(column, row) {
-    const square = playerBoard.getSquare(column, row);
+  function canPlaceShipOnSquare(column, row, size) {
+    let isPossible = true;
 
-    return (square === null);
+    for (let i = 0; i < size; i++) {
+      const square = playerBoard.getSquare(+column + i, row);
+      if (square != null) isPossible = false;
+    }
+
+    return isPossible;
   }
 
   function updateDraggedShip(targetTd) {
@@ -73,7 +62,8 @@ function gameLoop() {
     function drop(ev) {
       const tdParent = ev.target.parentNode;
       const [column, row] = [ev.target.dataset.column, tdParent.dataset.row];
-      if (!canPlaceShipOnSquare(column, row)) return;
+      const { size } = shipBeingDragged.dataset;
+      if (!canPlaceShipOnSquare(column, row, size)) return;
 
       ev.preventDefault();
       const data = ev.dataTransfer.getData('ship');

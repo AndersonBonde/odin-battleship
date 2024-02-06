@@ -27,7 +27,7 @@ function gameboard(gameboardDOM) {
       return board[row][column];
     }
 
-    throw new Error('Coordinate out of bounds');
+    return false;
   }
 
   function placeShip(column, row, shipSize = 1) {
@@ -36,8 +36,7 @@ function gameboard(gameboardDOM) {
     for (let i = 0; i < shipSize; i++) {
       if (getSquare(+column + i, row) != null) {
         // Ship can't be placed message
-        console.log('Can"t place ship');
-        return;
+        return false;
       }
     }
 
@@ -46,6 +45,7 @@ function gameboard(gameboardDOM) {
     }
 
     ships.push(newShip);
+    return true;
   }
 
   function removeShip(column, row) {
@@ -111,15 +111,28 @@ function gameboard(gameboardDOM) {
     return pos;
   }
 
-  function placeRandomShips(amount) {
-    for (let i = 0; i < amount; i++) {
+  function placeRandomShips(size1, size2, size3) {
+    for (let i = 0; i < size1; i++) {
       const randomPos = pickRandomSquare();
       placeShip(randomPos.column, randomPos.row);
+    }
+
+    for (let i = 0; i < size2; i++) {
+      const randomPos = pickRandomSquare();
+      const placed = placeShip(randomPos.column, randomPos.row, 2);
+
+      if (!placed) i -= 1;
+    }
+
+    for (let i = 0; i < size3; i++) {
+      const randomPos = pickRandomSquare();
+      const placed = placeShip(randomPos.column, randomPos.row, 3);
+
+      if (!placed) i -= 1;
     }
   }
 
   return {
-    get board() { return board; },
     get possibleShots() { return possibleShots; },
     get ships() { return ships; },
     getSquare,
