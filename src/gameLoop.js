@@ -54,9 +54,9 @@ const gameboard = require('./factories/gameboard');
 
     function drag(ev) {
       shipBeingDragged = ev.target;
-      const { column, row } = shipBeingDragged.dataset;
+      const { column, row, size } = shipBeingDragged.dataset;
 
-      if (column != -1) playerBoard.removeShip(column, row);
+      if (column != -1) playerBoard.removeShip(column, row, size);
 
       ev.dataTransfer.setData('ship', ev.target.id);
     }

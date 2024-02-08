@@ -48,11 +48,14 @@ function gameboard(gameboardDOM) {
     return true;
   }
 
-  function removeShip(column, row) {
+  function removeShip(column, row, shipSize) {
     ships.forEach((ship, idx) => {
       if (ship.pos.column == column && ship.pos.row == row) ships.splice(idx, 1);
     });
-    board[row][column] = null;
+
+    for (let i = 0; i < shipSize; i++) {
+      board[row][+column + i] = null;
+    }
   }
 
   function squareCanBeShot(column, row) {
