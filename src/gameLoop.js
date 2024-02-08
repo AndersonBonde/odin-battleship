@@ -4,7 +4,10 @@ const gameboard = require('./factories/gameboard');
   const playerBoard = gameboard('.playerBoard');
   const computerBoard = gameboard('.computerBoard');
   const shipContainer = document.querySelector('.shipContainer');
-  const computerTurnDelay = 400;
+  const playButton = document.querySelector('.playButton');
+  const playerTurnIndicator = document.querySelector('#playerTurnIndicator');
+  const computerTurnIndicator = document.querySelector('#computerTurnIndicator');
+  const computerTurnDelay = 500;
   const playerShipsAmount = 8;
   let onGoing = false;
   let playerTurn = true;
@@ -47,7 +50,17 @@ const gameboard = require('./factories/gameboard');
     });
   }
 
-  (function configureDraggables() {
+  function updateTurnIndicators() {
+    if (playerTurn) {
+      playerTurnIndicator.style.visibility = 'visible';
+      computerTurnIndicator.style.visibility = 'hidden';
+    } else {
+      playerTurnIndicator.style.visibility = 'hidden';
+      computerTurnIndicator.style.visibility = 'visible';
+    }
+  }
+
+  function configureDraggables() {
     function allowDrop(ev) {
       ev.preventDefault();
     }
@@ -56,6 +69,7 @@ const gameboard = require('./factories/gameboard');
       shipBeingDragged = ev.target;
       const { column, row, size } = shipBeingDragged.dataset;
 
+      // Remove old coordinates in case of repositioning;
       if (column != -1) playerBoard.removeShip(column, row, size);
 
       ev.dataTransfer.setData('ship', ev.target.id);
@@ -78,6 +92,7 @@ const gameboard = require('./factories/gameboard');
       if (playerBoard.ships.length === playerShipsAmount) {
         onGoing = true;
         removeDraggableFromShips();
+        updateTurnIndicators();
         shipContainer.style.display = 'none';
       }
     }
@@ -90,6 +105,24 @@ const gameboard = require('./factories/gameboard');
     shipDraggables.forEach((draggable) => {
       draggable.setAttribute('draggable', true);
       draggable.addEventListener('dragstart', drag);
+    });
+  }
+
+  (function initialDOMSetup() {
+    const header = shipContainer.querySelector('header');
+    const ships = shipContainer.querySelector('.ships');
+
+    configureDraggables();
+
+    header.style.display = 'none';
+    ships.style.display = 'none';
+    playerTurnIndicator.style.visibility = 'hidden';
+    computerTurnIndicator.style.visibility = 'hidden';
+
+    playButton.addEventListener('click', () => {
+      header.style.display = 'block';
+      ships.style.display = 'flex';
+      playButton.style.display = 'none';
     });
   }());
 
@@ -117,8 +150,10 @@ const gameboard = require('./factories/gameboard');
         }
 
         playerTurn = false;
+        updateTurnIndicators();
         setTimeout(() => {
           playerTurn = true;
+          updateTurnIndicators();
 
           const playerAttack = playerBoard.receiveRandomAttack();
           if (playerAttack == 'Game Over') {

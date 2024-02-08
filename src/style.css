@@ -18,14 +18,39 @@ body > header {
   text-align: center;
 }
 
+/* Tables conteiner */
+
 .container {
+  position: relative;
   display: flex;
   gap: 36px;
   justify-content: center;
   padding-top: 80px;
 }
 
+#playerTurnIndicator,
+#computerTurnIndicator {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+}
+
+#playerTurnIndicator {
+  top: -40px;
+  left: 35px;
+  background-color: lightskyblue;
+  border-radius: 50%;
+}
+
+#computerTurnIndicator {
+  top: -40px;
+  right: 0;
+  background-color: tomato;
+  border-radius: 50%;
+}
+
 table {
+  position: relative;
   border-collapse: collapse;
   letter-spacing: 1px;
 }
@@ -36,6 +61,7 @@ td {
   max-width: 36px;
   height: 36px;
   max-height: 36px;
+  text-align: center;
 }
 
 .playerBoard td:hover,
@@ -73,6 +99,19 @@ td {
   flex-direction: column;
   align-items: center;
   gap: 36px;
+}
+
+.playButton {
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 12px 24px;
+  background-color: white;
+  border-radius: 6px;
+}
+
+.playButton:hover {
+  background-color: lightgray;
+  cursor: pointer;
 }
 
 .shipContainer > header {
