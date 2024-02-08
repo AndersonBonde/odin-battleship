@@ -127,7 +127,16 @@ const gameboard = require('./factories/gameboard');
   }());
 
   function displayWinner() {
-    console.log(`${winner} won the match!`);
+    const pageHeader = document.querySelector('body > header');
+    const pageH = document.querySelector('body > header > h2');
+
+    if (winner === 'Player') {
+      pageHeader.style.backgroundColor = 'lightSkyBlue';
+    } else {
+      pageHeader.style.backgroundColor = 'tomato';
+    }
+
+    pageH.textContent = `${winner} won the match!`;
   }
 
   computerTds.forEach((el) => {
